@@ -1,9 +1,13 @@
+import Header from "./components/Header";
 import ScrollVideoSection from "./components/ScrollVideoSection";
+import ParallaxPhotoSection from "./components/ParallaxPhotoSection";
 import ClosingSection from "./components/ClosingSection";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
     <main className="bg-[#0a0a0b]">
+      <Header />
       <ScrollVideoSection
         videoSrc="/construction.mp4"
         containerHeightVh={400}
@@ -35,6 +39,20 @@ export default function Home() {
         ]}
       />
 
+      <ParallaxPhotoSection
+        imageUrl="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80"
+        eyebrow="THE RESULT"
+        heading="Every stone, set with intention."
+        align="left"
+      />
+
+      <ParallaxPhotoSection
+        imageUrl="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920&q=80"
+        eyebrow="THE DETAIL"
+        heading="Built to be lived in, not just looked at."
+        align="right"
+      />
+
       <ScrollVideoSection
         videoSrc="/tour.mp4"
         containerHeightVh={350}
@@ -58,6 +76,8 @@ export default function Home() {
       />
 
       <ClosingSection />
+
+      <Footer />
     </main>
   );
 }
