@@ -1,126 +1,119 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 type ParallaxPhotoSectionProps = {
   imageUrl: string;
   eyebrow: string;
   heading: string;
-  align?: "left" | "center" | "right";
+  /** Foreground content that scrolls up and curtains over the pinned image. */
+  children?: React.ReactNode;
 };
 
-// How much slower the image moves than the page (fraction of scroll offset).
-// The image is rendered 130% tall so this movement never reveals its edges.
-const PARALLAX_FACTOR = 0.18;
-
+/**
+ * Curtain / reveal parallax:
+ * The image is pinned to the viewport (position: sticky) while the foreground —
+ * the caption first, then whatever `children` are passed — scrolls up and over
+ * it. The previous section lifts away to reveal the pinned image; the children
+ * (a solid section) then slide over it to draw the curtain closed.
+ */
 export default function ParallaxPhotoSection({
   imageUrl,
   eyebrow,
   heading,
-  align = "left",
+  children,
 }: ParallaxPhotoSectionProps) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
   const [hasError, setHasError] = useState(false);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    const image = imageRef.current;
-    if (!section || !image) return;
-
-    let raf = 0;
-    let ticking = false;
-
-    const update = () => {
-      ticking = false;
-      const rect = section.getBoundingClientRect();
-      // Only animate while the section is anywhere near the viewport.
-      if (rect.bottom < -100 || rect.top > window.innerHeight + 100) return;
-      // rect.top goes from +vh (entering) → -vh (leaving); scale it down so the
-      // image drifts slower than the foreground.
-      const offset = rect.top * PARALLAX_FACTOR;
-      image.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`;
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        raf = requestAnimationFrame(update);
-      }
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  const alignment =
-    align === "center"
-      ? "items-center text-center"
-      : align === "right"
-      ? "items-end text-right"
-      : "items-start text-left";
-
   return (
-    <section
-      ref={sectionRef}
-      className="relative h-screen w-full overflow-hidden bg-[#1a1410]"
-    >
-      {/* Warm stone-toned gradient base — always present, and the graceful
-          fallback if the photo fails to load. */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(135deg, #2b211a 0%, #47372a 45%, #1c1510 100%)",
-        }}
-        aria-hidden
-      />
+    <section className="relative w-full">
+      {/* Pinned background layer. */}
+      <div className="sticky top-0 z-0 h-screen w-full overflow-hidden">
+        {/* Warm Mediterranean-dusk fallback (also shows if no photo present). */}
+        <div className="absolute inset-0 bg-[#120d0a]" aria-hidden>
+          <svg
+            className="h-full w-full"
+            viewBox="0 0 1440 900"
+            preserveAspectRatio="xMidYMid slice"
+            aria-hidden
+          >
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#1a2233" />
+                <stop offset="42%" stopColor="#4a3324" />
+                <stop offset="70%" stopColor="#9a5a34" />
+                <stop offset="100%" stopColor="#c97a4a" />
+              </linearGradient>
+              <radialGradient id="sun" cx="50%" cy="70%" r="55%">
+                <stop offset="0%" stopColor="#ffd9a0" stopOpacity="0.85" />
+                <stop offset="35%" stopColor="#f0a85e" stopOpacity="0.35" />
+                <stop offset="100%" stopColor="#f0a85e" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <rect width="1440" height="900" fill="url(#sky)" />
+            <circle cx="720" cy="600" r="520" fill="url(#sun)" />
+            <circle
+              cx="720"
+              cy="600"
+              r="120"
+              fill="#ffe6bd"
+              fillOpacity="0.55"
+            />
+            {/* horizon + still-water reflection */}
+            <rect x="0" y="600" width="1440" height="300" fill="#0d0a08" fillOpacity="0.55" />
+            <rect x="0" y="600" width="1440" height="2" fill="#ffce9a" fillOpacity="0.4" />
+            {/* minimal house silhouette */}
+            <g fill="#0a0705" fillOpacity="0.9">
+              <rect x="470" y="470" width="230" height="132" />
+              <rect x="700" y="512" width="150" height="90" />
+              <rect x="360" y="520" width="110" height="82" />
+            </g>
+            <rect x="360" y="470" width="490" height="4" fill="#0a0705" fillOpacity="0.9" />
+          </svg>
+        </div>
 
-      {!hasError && (
-        <img
-          ref={imageRef}
-          src={imageUrl}
-          alt=""
-          onError={() => setHasError(true)}
-          className="absolute left-0 top-[-15%] h-[130%] w-full object-cover will-change-transform"
-          style={{ transform: "translate3d(0,0,0)" }}
+        {/* Real photo (drop one at the given path); covers the fallback. */}
+        {!hasError && (
+          <img
+            src={imageUrl}
+            alt=""
+            onError={() => setHasError(true)}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )}
+
+        {/* Legibility wash toward the bottom, where the caption sits. */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0) 80%)",
+          }}
+          aria-hidden
         />
-      )}
+      </div>
 
-      {/* Legibility overlay — weighted toward the bottom where the text sits. */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 75%)",
-        }}
-        aria-hidden
-      />
-
-      {/* Foreground content — anchored to the bottom of the frame. */}
-      <div className="relative z-10 flex h-full w-full items-end">
-        <div className="mx-auto w-full max-w-[1400px] px-8 pb-16 md:px-14 md:pb-24">
-          <div className={`flex w-full flex-col ${alignment}`}>
-            <div className="max-w-[620px]">
-              <p className="mb-4 text-xs font-medium uppercase tracking-[0.28em] text-white/65">
+      {/* Foreground — pulled up to sit over the pinned image, then scrolls. */}
+      <div className="relative z-10 -mt-[100vh]">
+        {/* Reveal caption window (transparent — the pinned image shows through). */}
+        <div className="flex h-screen w-full items-end">
+          <div className="mx-auto w-full max-w-[1500px] px-8 pb-20 md:px-16 md:pb-28">
+            <div className="max-w-[640px]">
+              <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-white/70">
                 {eyebrow}
               </p>
               <h2
-                className="font-serif text-4xl leading-tight text-white/95 md:text-6xl"
-                style={{ textShadow: "0 2px 30px rgba(0,0,0,0.55)" }}
+                className="font-serif text-4xl leading-[1.05] text-white md:text-7xl"
+                style={{ textShadow: "0 2px 40px rgba(0,0,0,0.6)" }}
               >
                 {heading}
               </h2>
             </div>
           </div>
         </div>
+
+        {/* Whatever is passed here (a solid section) curtains over the image. */}
+        {children}
       </div>
     </section>
   );

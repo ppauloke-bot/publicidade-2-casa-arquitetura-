@@ -42,14 +42,15 @@ export default function Home() {
 
       <StatsBar />
 
+      {/* Curtain reveal: the pinned photo shows as StatsBar lifts away, then
+          the ServiceCards panel scrolls up over it. */}
       <ParallaxPhotoSection
-        imageUrl="https://images.unsplash.com/photo-1602940659805-770d1b3b9911?auto=format&fit=crop&w=1920&q=80"
-        eyebrow="OUTDOOR LIVING"
+        imageUrl="/parallax.jpg"
+        eyebrow="Outdoor living"
         heading="More than a pool."
-        align="left"
-      />
-
-      <ServiceCards />
+      >
+        <ServiceCards />
+      </ParallaxPhotoSection>
 
       <ScrollVideoSection
         videoSrc="/tour.mp4"
