@@ -5,10 +5,10 @@ import { useState } from "react";
 type Project = { src: string; caption: string; location: string };
 
 const PROJECTS: Project[] = [
-  { src: "/gallery-1.jpg", caption: "Family pool", location: "Cascais" },
-  { src: "/gallery-2.jpg", caption: "Infinity edge", location: "Comporta" },
-  { src: "/gallery-3.jpg", caption: "Courtyard spa", location: "Sintra" },
-  { src: "/gallery-4.jpg", caption: "Garden & pool", location: "Estoril" },
+  { src: "/gallery-1.jpg", caption: "Pool & terrace", location: "Cascais" },
+  { src: "/gallery-2.jpg", caption: "Evening garden", location: "Comporta" },
+  { src: "/gallery-3.jpg", caption: "Chef's kitchen", location: "Sintra" },
+  { src: "/gallery-4.jpg", caption: "Stone villa", location: "Estoril" },
 ];
 
 function ProjectCard({ project }: { project: Project }) {
