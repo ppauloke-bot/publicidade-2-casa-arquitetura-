@@ -1,7 +1,8 @@
 type LogoProps = {
   size?: "sm" | "md";
   className?: string;
-  tone?: "light" | "muted";
+  /** "light" wordmark for dark backgrounds, "dark" for light backgrounds. */
+  tone?: "light" | "dark";
 };
 
 // Brand mark: a fine terracotta sun resting above two horizon/water lines —
@@ -11,12 +12,12 @@ export default function Logo({
   className = "",
   tone = "light",
 }: LogoProps) {
-  const mark = size === "sm" ? 26 : 30;
+  const mark = size === "sm" ? 24 : 28;
   const wordClass =
     size === "sm"
       ? "text-[13px] tracking-[0.42em]"
       : "text-[15px] tracking-[0.44em] md:text-base";
-  const wordColor = tone === "muted" ? "text-white/70" : "text-white/95";
+  const wordColor = tone === "dark" ? "text-[#1b1510]" : "text-white/95";
 
   return (
     <span className={`inline-flex items-center gap-3.5 ${className}`}>
@@ -28,28 +29,9 @@ export default function Logo({
         aria-hidden
         className="shrink-0"
       >
-        {/* sun */}
         <circle cx="16" cy="13" r="7.5" stroke="#C97A4A" strokeWidth="1.4" />
-        {/* horizon */}
-        <line
-          x1="4"
-          y1="24"
-          x2="28"
-          y2="24"
-          stroke="#C97A4A"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-        />
-        {/* water ripple */}
-        <line
-          x1="11"
-          y1="28"
-          x2="21"
-          y2="28"
-          stroke="#C97A4A"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-        />
+        <line x1="4" y1="24" x2="28" y2="24" stroke="#C97A4A" strokeWidth="1.4" strokeLinecap="round" />
+        <line x1="11" y1="28" x2="21" y2="28" stroke="#C97A4A" strokeWidth="1.4" strokeLinecap="round" />
       </svg>
       <span className={`font-serif uppercase ${wordColor} ${wordClass}`}>
         Solmar

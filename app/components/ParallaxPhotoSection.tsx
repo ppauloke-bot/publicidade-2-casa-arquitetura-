@@ -6,6 +6,7 @@ type ParallaxPhotoSectionProps = {
   imageUrl: string;
   eyebrow: string;
   heading: string;
+  body?: string;
   /** Foreground content that scrolls up and curtains over the pinned image. */
   children?: React.ReactNode;
 };
@@ -21,6 +22,7 @@ export default function ParallaxPhotoSection({
   imageUrl,
   eyebrow,
   heading,
+  body,
   children,
 }: ParallaxPhotoSectionProps) {
   const [hasError, setHasError] = useState(false);
@@ -108,6 +110,14 @@ export default function ParallaxPhotoSection({
               >
                 {heading}
               </h2>
+              {body && (
+                <p
+                  className="mt-6 max-w-[440px] text-base leading-relaxed text-white/75"
+                  style={{ textShadow: "0 1px 20px rgba(0,0,0,0.6)" }}
+                >
+                  {body}
+                </p>
+              )}
             </div>
           </div>
         </div>

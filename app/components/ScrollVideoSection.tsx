@@ -14,6 +14,10 @@ type ScrollVideoSectionProps = {
   videoSrc: string;
   containerHeightVh: number;
   chapters: Chapter[];
+  /** Optional persistent headline pinned top-left over the video. */
+  heroHeading?: string;
+  /** Optional small eyebrow above the hero heading. */
+  heroEyebrow?: string;
 };
 
 const SMOOTHING = 0.22;
@@ -22,6 +26,8 @@ export default function ScrollVideoSection({
   videoSrc,
   containerHeightVh,
   chapters,
+  heroHeading,
+  heroEyebrow,
 }: ScrollVideoSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -170,6 +176,35 @@ export default function ScrollVideoSection({
           }}
           aria-hidden
         />
+
+        {/* Optional persistent hero headline, pinned near the top-left. */}
+        {heroHeading && (
+          <>
+            <div
+              className="pointer-events-none absolute inset-x-0 top-0 h-[38vh]"
+              style={{
+                background:
+                  "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 100%)",
+              }}
+              aria-hidden
+            />
+            <div className="pointer-events-none absolute left-0 top-0 w-full pt-24 md:pt-28">
+              <div className="mx-8 max-w-[640px] md:mx-14">
+                {heroEyebrow && (
+                  <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.3em] text-white/70">
+                    {heroEyebrow}
+                  </p>
+                )}
+                <h1
+                  className="font-serif text-4xl leading-[1.05] text-white md:text-6xl"
+                  style={{ textShadow: "0 2px 30px rgba(0,0,0,0.5)" }}
+                >
+                  {heroHeading}
+                </h1>
+              </div>
+            </div>
+          </>
+        )}
 
         {/* Chapter + progress overlay: bottom-left. */}
         <div className="pointer-events-none absolute bottom-0 left-0 w-full">
