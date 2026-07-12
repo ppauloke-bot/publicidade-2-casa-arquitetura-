@@ -144,7 +144,7 @@ export default function ScrollVideoSection({
       style={{ height: `${containerHeightVh}vh` }}
       className="relative w-full"
     >
-      <div className="sticky top-0 h-screen w-screen overflow-hidden">
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* Fallback dark background — always present, sits behind the video. */}
         <div className="absolute inset-0 bg-[#0a0a0b]" aria-hidden />
 
