@@ -94,27 +94,27 @@ export default function ParallaxPhotoSection({
         />
       )}
 
-      {/* Legibility overlay — darkened toward the side the text sits on. */}
+      {/* Legibility overlay — weighted toward the bottom where the text sits. */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.35) 100%)",
+            "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 75%)",
         }}
         aria-hidden
       />
 
-      {/* Foreground content. */}
-      <div className="relative z-10 flex h-full w-full items-center">
-        <div className="mx-auto w-full max-w-[1400px] px-8 md:px-14">
+      {/* Foreground content — anchored to the bottom of the frame. */}
+      <div className="relative z-10 flex h-full w-full items-end">
+        <div className="mx-auto w-full max-w-[1400px] px-8 pb-16 md:px-14 md:pb-24">
           <div className={`flex w-full flex-col ${alignment}`}>
-            <div className="max-w-[560px]">
-              <p className="mb-4 text-xs font-medium uppercase tracking-[0.28em] text-white/60">
+            <div className="max-w-[620px]">
+              <p className="mb-4 text-xs font-medium uppercase tracking-[0.28em] text-white/65">
                 {eyebrow}
               </p>
               <h2
-                className="font-serif text-3xl leading-tight text-white/95 md:text-5xl"
-                style={{ textShadow: "0 2px 30px rgba(0,0,0,0.5)" }}
+                className="font-serif text-4xl leading-tight text-white/95 md:text-6xl"
+                style={{ textShadow: "0 2px 30px rgba(0,0,0,0.55)" }}
               >
                 {heading}
               </h2>

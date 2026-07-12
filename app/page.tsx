@@ -1,8 +1,9 @@
 import Header from "./components/Header";
 import ScrollVideoSection from "./components/ScrollVideoSection";
+import StatsBar from "./components/StatsBar";
 import ParallaxPhotoSection from "./components/ParallaxPhotoSection";
-import ClosingSection from "./components/ClosingSection";
-import Footer from "./components/Footer";
+import ServiceCards from "./components/ServiceCards";
+import ClosingFooter from "./components/ClosingFooter";
 
 export default function Home() {
   return (
@@ -39,19 +40,16 @@ export default function Home() {
         ]}
       />
 
+      <StatsBar />
+
       <ParallaxPhotoSection
-        imageUrl="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80"
-        eyebrow="THE RESULT"
-        heading="Every stone, set with intention."
+        imageUrl="https://images.unsplash.com/photo-1602940659805-770d1b3b9911?auto=format&fit=crop&w=1920&q=80"
+        eyebrow="OUTDOOR LIVING"
+        heading="More than a pool."
         align="left"
       />
 
-      <ParallaxPhotoSection
-        imageUrl="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920&q=80"
-        eyebrow="THE DETAIL"
-        heading="Built to be lived in, not just looked at."
-        align="right"
-      />
+      <ServiceCards />
 
       <ScrollVideoSection
         videoSrc="/tour.mp4"
@@ -75,9 +73,7 @@ export default function Home() {
         ]}
       />
 
-      <ClosingSection />
-
-      <Footer />
+      <ClosingFooter />
     </main>
   );
 }
